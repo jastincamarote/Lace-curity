@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFID Attendance System</title>
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: Cambria;
+            margin: 0;
+            padding: 0;
+            background-color: #F4F4F4; /* Alabaster */
+            color:  #4B8CA3; /* Tiber */
+            height: 100%;
+        }
+
+        /* Full-page background image for Login */
+        #loginPage {
+            background-image: url('bgg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Login Form Box */
+        .login-box {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-box h1 {
+            margin-bottom: 20px;
+            font-size: 2em;
+            color: #333;
+        }
+
+        #loginForm input, #loginForm button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color:  #4B8CA3;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #E6E8EB;
+        }
+
+        /* Homepage */
+        .homepage {
+            background-image: url('gray.jpg'); /* Homepage Image */
+            background-size: cover;
+            background-position: center;
+            padding: 40px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh; /* Full viewport height */
+        }
+
+        .header {
+            width: 100%;
+            margin-bottom: 20px; /* Space between title and content */
+            text-align: center;
+            text color:  #4B8CA3;
+        }
+
+        .header h1 {
+            font-size: 60px; /* Increased size */
+            margin: 0;
+        }
+
+        .header h2 {
+            font-size: 40px; /* Increased size */
+            color: #4B8CA3;
+            margin-top: 10px;
+        }
+
+        .homepage-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 20px;
+        }
+
+        .text-box {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 30px;
+            max-width: 600px; /* Larger size */
+            width: 100%;
+            height: 400px; /* Increased height */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: left;
+            font-size: 18px; /* Slightly bigger text for better readability */
+        }
+
+        .search-section {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            text-align: center;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #sectionSearch {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-top: 10px;
+            width: 80%;
+        }
+
+        #searchBtn {
+            padding: 10px 20px;
+            background-color:  #4B8CA3; /* Tiber */
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 80%;
+            height: 40px;
+            border-radius: 5px;
+        }
+
+        #searchBtn:hover {
+            background-color: #3C6E2F;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #F4F4F4; /* Alabaster */
+            text-align: center;
+            padding: 10px;
+            color: #070606;
+        }
+
+        footer a {
+            text-decoration: none;
+            color: #4B8B3B;
+        }
+
+        .student-card img {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .student-card {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            cursor: pointer;
+            background: #4B8CA3;
+            color: white;
+            align-content: center;
+        }
+
+        /* Student Page Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Student Page Container */
+#studentPage {
+   display: none;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Student Box */
+.student-box {
+     background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    height: 90%;
+    text-align: center;
+    animation: fadeIn 0.15s ease-in-out;
+    align-content: normal;
+    box-align: center;
+
+/* Student Name & Header */
+.student-box h1, .student-box h2 {
+    color: #4B8CA3;
+    margin-bottom: 10px;
+}
+
+/* Attendance List */
+#attendanceList {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+#attendanceList li {
+    background-color: #E6E8EB;
+    margin: 8px 0;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    animation: slideUp 0.5s ease-in-out;
+}
+
+/* Back Button */
+button {
+    margin-top: 15px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #4B8CA3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: #3C6E2F;
+    transform: scale(1.05);
+}
+
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Login Page -->
+        <div class="container" id="loginPage">
+            <div class="login-box">
+                <h1>Login</h1>
+                <form id="loginForm">
+                    <input type="text" id="username" placeholder="Username" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Home Page -->
+        <div class="container" id="homePage" style="display: none;">
+            <div class="homepage">
+                <div class="header">
+                    <h1>PAMANTASAN NG LUNGSOD NG MARIKINA - SENIOR HIGH SCHOOL</h1>
+                    <h2>STEM STUDENTS ATTENDANCE RECORD</h2>
+                    <hr>
+                </div>
+                <div class="homepage-content">
+                    <!-- Text Box (left) -->
+                    <div class="text-box">
+                        <h1>About us</h1>
+                        <hr>
+                        <p>Pamantasan ng Lungsod ng Marikina Senior High School (PLMAR SHS) is dedicated to providing quality education that prepares students for success in their chosen fields. We offer a variety of academic tracks, including STEM, ABM, and HUMSS, that help students build the skills they need for their future careers. Our school also encourages personal growth through extracurricular activities, leadership opportunities, and community involvement. With a supportive team of teachers and a welcoming environment, we strive to help every student reach their full potential, develop strong values, and become responsible and engaged citizens. At PLMAR SHS, we believe in creating well-rounded individuals ready to face the challenges of the future.</p><hr>
+                        <h3>Excellence, Discipline, And Good Taste</h3>
+                    </div>
+
+                    <!-- Search Section (right) -->
+                    <div class="search-section">
+                        <h3>Search Section</h3>
+                        <input type="text" id="sectionSearch" placeholder="Search Section">
+                        <button id="searchBtn">Search</button>
+                        <p>Here, you can search for student attendance records by section. Type your section name into the search box and find the information you need.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Page -->
+        <div class="container" id="sectionPage" style="display: none;">
+            <h1>Section: <span id="sectionName">Stem 211-Vela</span></h1>
+            <div id="studentsList">
+                <!-- Student Cards -->
+            </div>
+            <button onclick="goHome()">Back to Home</button>
+        </div>
+
+       <!-- Student Details Page -->
+    <div class="container" id="studentPage">
+             <div class="student-box">
+           <h1>Student: <span id="studentName">Martina Canares</span></h1>
+                 <h2>Attendance Records</h2>
+             <ul id="attendanceList"></ul>
+        <button onclick="goToSection()">Back to Section</button>
+    </div>
+</div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Pamantasan ng Lungsod ng Marikina - Senior High School | <a href="#">Privacy Policy</a></p>
+    </footer>
+
+    <script>
+        // Initializing Dummy Data
+        const students = [
+            { name: "Martina Canares", photo: "martina.jpg", attendance: ["01-01-2024: Present", "02-01-2024: Absent"] },
+            { name: "Sheema Magbanua", photo: "sheema.jpg", attendance: ["01-01-2024: Present", "02-01-2024: Present"] },
+            { name: "Jasmin claire Jamora", photo: "jasmine.jpg", attendance: ["01-01-2024: Absent", "02-01-2024: Present"] },
+            { name: "Elbert Rebustillo", photo: "elbert.jpg", attendance: ["01-01-2024: Present", "02-01-2024: Present"] },
+            { name: "Nyca Marie", photo: "nyca.jpg", attendance: ["01-01-2024: Absent", "02-01-2024: Absent"] },
+            { name: "Fionah Quinones", photo: "fionah.jpg", attendance: ["01-01-2024: Present", "02-01-2024: Present"] },
+            { name: "Sophia The First", photo: "sophia.jpg", attendance: ["01-01-2024: Present", "02-01-2024: Absent"] },
+            { name: "Andrei Aboga", photo: "Aboga.jpg", attendance: ["01-01-2024: Present", "02-01-2024: Absent"] },
+            { name: "Janrom Espanola", photo: "janrom.jpg", attendance: ["01-01-2024: Absent", "02-01-2024: Present"] },
+            { name: "Guy De Samaupan", photo: "samaupan.jpg", attendance: ["01-01-2024: Present", "02-01-2024: Present"] },
+            { name: "Nadine Lustre", photo: "nadine.jpg", attendance: ["01-01-2024: Absent", "02-01-2024: Absent"] },
+            { name: "Adaam Taway", photo: "adam.jpg", attendance: ["01-01-2024: Present", "02-01-2024: Present"] },
+        ];
+
+        // Navigation
+        const loginPage = document.getElementById("loginPage");
+        const homePage = document.getElementById("homePage");
+        const sectionPage = document.getElementById("sectionPage");
+        const studentPage = document.getElementById("studentPage");
+
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (username === "admin" && password === "password") {
+                loginPage.style.display = "none";
+                homePage.style.display = "block";
+            } else {
+                alert("Wrong Information");
+            }
+        });
+
+        document.getElementById("searchBtn").addEventListener("click", function () {
+            const section = document.getElementById("sectionSearch").value.trim();
+            if (section.toLowerCase() === "stem 211 vela") {
+                document.getElementById("sectionName").textContent = "Stem 211 Vela";
+                displayStudents(); // Display students of this section
+                homePage.style.display = "none";
+                sectionPage.style.display = "block";
+            } else {
+                alert("Section not found. Please enter Your Section.");
+            }
+        });
+
+        function displayStudents() {
+            const studentsList = document.getElementById("studentsList");
+            studentsList.innerHTML = ""; // Clear previous list
+            students.forEach(student => {
+                const card = document.createElement("div");
+                card.className = "student-card";
+                card.innerHTML = `
+                    <img src="${student.photo}" alt="Student Photo">
+                    <p>${student.name}</p>
+                `;
+                card.onclick = () => viewStudent(student);
+                studentsList.appendChild(card);
+            });
+        }
+
+        function viewStudent(student) {
+            document.getElementById("studentName").textContent = student.name;
+            const attendanceList = document.getElementById("attendanceList");
+            attendanceList.innerHTML = student.attendance.map(record => `<li>${record}</li>`).join("");
+            sectionPage.style.display = "none";
+            studentPage.style.display = "block";
+        }
+
+        function goHome() {
+            sectionPage.style.display = "none";
+            homePage.style.display = "block";
+        }
+
+        function goToSection() {
+            studentPage.style.display = "none";
+            sectionPage.style.display = "block";
+        }
+    </script>
+</body>
+</html>
